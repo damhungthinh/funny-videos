@@ -1,0 +1,10 @@
+.root {
+  .form {
+    > div[class*='ant-form-item-with-help ant-form-item-has-error'] {
+      margin-bottom: 0px;
+      div[class*='ant-form-item-explain'] {
+        display: none;
+      }
+    }
+  }
+}

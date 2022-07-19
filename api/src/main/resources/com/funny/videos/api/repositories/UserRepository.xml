@@ -1,0 +1,48 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.funny.videos.api.repositories.UserRepository">
+    <select id="findAlL" resultType="user">
+        SELECT
+            id,
+            username,
+            active
+        FROM
+            users
+        ORDER BY
+             role, username ASC
+    </select>
+
+    <select id="getByUsername" resultType="user">
+        SELECT * FROM users WHERE username ILIKE #{username}
+    </select>
+    <select id="getById" resultType="user" parameterType="map">
+        SELECT * FROM users WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="user">
+        INSERT INTO users(
+            username,
+            password,
+            active
+        ) VALUES (
+            #{username},
+            #{password},
+            true
+        )
+    </insert>
+
+    <update id="update" parameterType="user">
+        UPDATE
+            users
+        SET
+            username = #{username},
+            active = #{active}
+        WHERE
+            id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="map">
+        DELETE FROM users WHERE id = #{id}
+    </delete>
+</mapper>

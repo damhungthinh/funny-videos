@@ -1,0 +1,47 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.funny.videos.api.repositories.SharedVideoRepository">
+  <resultMap id="shared_video" type="com.funny.videos.api.models.entities.SharedVideo">
+    <association property="sharedBy" javaType="user" columnPrefix="user_" notNullColumn="id" />
+  </resultMap>
+  <select id="findByConditions" resultMap="shared_video" parameterType="com.funny.videos.api.models.requests.SharedVideoRequest">
+    SELECT
+      shared_videos.id,
+      shared_videos.video_key,
+      shared_videos.video_url,
+      shared_videos.active,
+      shared_videos.shared_at,
+      users.id       AS user_id,
+      users.username AS user_username,
+      users.active   AS user_active,
+      -1 + DENSE_RANK() OVER (ORDER BY shared_videos.id ASC)
+         + DENSE_RANK() OVER (ORDER BY shared_videos.id DESC) AS total_elements
+    FROM
+      shared_videos
+      INNER JOIN users
+        ON shared_videos.shared_by = users.id
+    <if test="orderBy != null and !orderBy.isEmpty()">
+      ORDER BY ${orderBy}
+    </if>
+    LIMIT ${size}
+    OFFSET ${offset}
+  </select>
+
+  <insert id="insert" parameterType="com.funny.videos.api.models.entities.SharedVideo">
+    INSERT INTO shared_videos(
+      video_key,
+      video_url,
+      active,
+      shared_at,
+      shared_by
+    ) VALUES (
+      #{videoKey},
+      #{videoUrl},
+      true,
+      CURRENT_TIMESTAMP,
+      #{sharedBy.id}
+    )
+  </insert>
+
+</mapper>

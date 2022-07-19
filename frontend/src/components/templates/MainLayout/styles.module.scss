@@ -1,0 +1,26 @@
+.root {
+  min-height: 100vh !important;
+
+  .header {
+    z-index: 10;
+    background-color: var(--white);
+    box-shadow: 0 2px 8px #0000000d;
+    position: sticky;
+    top: 0;
+    padding: 0px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: transparent;
+  }
+  .footer {
+    display: flex;
+    justify-content: center;
+  }
+}
